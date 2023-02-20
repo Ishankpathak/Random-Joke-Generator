@@ -1,23 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import './App.css'
 
 function App() {
+  const [joke, setJoke] = useState('');
+  const [clicked , setclicked] = useState(false)
+
+  function handleClick(){
+    setclicked(true)
+  }
+
+  useEffect(() => {
+    if(clicked){
+      fetch('https://api.chucknorris.io/jokes/random')
+      .then(response => response.json())
+      .then(jsonData => setJoke(jsonData.value))
+      setclicked(false)
+  }},[clicked]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+       <h3 className='heading'>Random Jokes</h3>
+      <div className='joke'>
+       <h5>{joke}😅</h5>
+      </div>
+
+      <div className='btn' >
+       <button onClick={handleClick} className='button' >Get a new joke</button>
+      </div>
     </div>
   );
 }
